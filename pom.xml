@@ -14,6 +14,14 @@
 <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version> <!-- Verifique se há uma versão mais recente -->
+    </dependency>
+
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
