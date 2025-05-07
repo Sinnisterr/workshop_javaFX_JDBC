@@ -42,11 +42,7 @@ public class MainViewController implements Initializable {
     public void onMenuItemDepartmentAction() {
         loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
             controller.setDepartmentService(new DepartmentService());
-            try {
-                controller.updateTableView();
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+
         });
     }
 

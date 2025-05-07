@@ -15,13 +15,13 @@ public class DepartmentService {
         return dao.findAll();
     }
 
-    public void saveOrUpdate(Department obj) {
+    public Department saveOrUpdate(Department obj) {
         if (obj.getId() == null) {
             dao.insert(obj);
-        }
-        else {
+        } else {
             dao.update(obj);
         }
+        return dao.findById(obj.getId());
     }
-
 }
+

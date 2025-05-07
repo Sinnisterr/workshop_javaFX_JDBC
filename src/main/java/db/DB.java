@@ -20,6 +20,7 @@ public class DB {
                 Properties props = loadProperties();
                 String url = props.getProperty("dburl");
                 conn = DriverManager.getConnection(url, props);
+                conn.setAutoCommit(false); // Importante: desabilita o autocommit
             } catch (SQLException e) {
                 throw new DbExceptions(e.getMessage());
             }

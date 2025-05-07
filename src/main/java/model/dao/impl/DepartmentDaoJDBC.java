@@ -40,21 +40,47 @@ public class DepartmentDaoJDBC implements DepartmentDao{
                     obj.setId(id);
                 }
                 DB.closeResultSet(rs);
+                conn.commit(); // Adicione o commit aqui
             } else {
                 throw new DbExceptions("Unexpected error! No rows affected!");
             }
         } catch (SQLException e) {
-            throw new DbExceptions(e.getMessage());
+            try {
+                conn.rollback(); // Em caso de erro, faça rollback
+                throw new DbExceptions("Transaction rolled back! Caused by: " + e.getMessage());
+            } catch (SQLException e1) {
+                throw new DbExceptions("Error trying to rollback! Caused by: " + e1.getMessage());
+            }
         } finally {
             DB.closeStatement(st);
         }
     }
 
-    @Override
-    public void update(Department obj) {
-        
 
+    public void update(Department obj) {
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "UPDATE department SET Name = ? WHERE Id = ?");
+
+            st.setString(1, obj.getName());
+            st.setInt(2, obj.getId());
+
+            st.executeUpdate();
+            conn.commit(); // Adicione o commit aqui
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback(); // Em caso de erro, faça rollback
+                throw new DbExceptions("Transaction rolled back! Caused by: " + e.getMessage());
+            } catch (SQLException e1) {
+                throw new DbExceptions("Error trying to rollback! Caused by: " + e1.getMessage());
+            }
+        } finally {
+            DB.closeStatement(st);
+        }
     }
+
 
     @Override
     public void deleteById(Integer id) {

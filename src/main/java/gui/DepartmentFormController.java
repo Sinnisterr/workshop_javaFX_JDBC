@@ -60,17 +60,14 @@ public class DepartmentFormController implements Initializable {
         if(entity == null) {
             throw new IllegalStateException("Entity was null");
         }
-
         if (service == null) {
             throw new IllegalStateException("Service was null");
         }
-
         try {
             entity = getFormData();
-            service.saveOrUpdate(entity);
+            entity = service.saveOrUpdate(entity);
             notifyDataChangeListeners();
             Utils.currentStage(event).close();
-
         }
         catch (ValidationException e) {
             setErrorsMessages(e.getErrors());
@@ -78,11 +75,13 @@ public class DepartmentFormController implements Initializable {
         catch (DbExceptions e) {
             Alerts.showAlert("Error saving object", null, e.getMessage(), Alert.AlertType.ERROR);
         }
-
     }
 
+
     private void notifyDataChangeListeners() {
+        System.out.println("Notificando listeners...");
         for (DataChangeListener listener : dataChangeListeners) {
+            System.out.println("Listener encontrado: " + listener);
             listener.onDataChange();
         }
     }
@@ -135,12 +134,14 @@ public class DepartmentFormController implements Initializable {
         Set<String> fields = errors.keySet();
         if(fields.contains("name")) {
             labelErrorName.setText(errors.get("name"));
+        } else {
+            labelErrorName.setText("");
         }
 
 
-        for (String field : fields) {
-            labelErrorName.setText(errors.get(field));
-        }
+//        for (String field : fields) {
+//            labelErrorName.setText(errors.get(field));
+//        }
     }
 
 }
